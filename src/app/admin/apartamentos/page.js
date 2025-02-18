@@ -55,7 +55,7 @@ const Apartamentos = () => {
   useEffect(() => {
     cargarApartamentos();
     cargarPropietarios();
-  }, []);
+  }, []);//carga los datos
 
   const mostrarModal = (message, type = "success") => {
     setModalMessage(message);
@@ -63,18 +63,18 @@ const Apartamentos = () => {
     setModalVisible(true);
     setTimeout(() => {
       setModalVisible(false);
-    }, 2000);
+    }, 2000);//muestra el modal durante 2 segundos
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setApartamento((prev) => ({
+    setApartamento((prev) => ({       // aparece el formulario vacio 
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {//maneja el envio del formulario
     e.preventDefault();
     try {
       if (isEditing) {
@@ -85,8 +85,8 @@ const Apartamentos = () => {
         mostrarModal("Apartamento registrado exitosamente");
       }
 
-      setIsEditing(false);
-      setApartamento({
+      setIsEditing(false);//desactiva el modo edicion despues de hacer una operacion exitosa
+      setApartamento({//limpia los campos del formulario
         numeroApartamento: "",
         metros: "",
         estado: "ocupado",
@@ -107,17 +107,17 @@ const Apartamentos = () => {
 
   const handleEdit = (apt) => {
     setApartamento(apt);
-    setIsEditing(true);
+    setIsEditing(true);// formulario en modo edicion
     formularioRef.current.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Está seguro de eliminar este apartamento?")) return;
+    if (!window.confirm("¿Está seguro de eliminar este apartamento?")) return;//cuadro de confirmacion
 
     try {
       await apiClient.delete(`/apartamentos/${id}`);
       mostrarModal("Apartamento eliminado exitosamente");
-      cargarApartamentos();
+      cargarApartamentos();//refleja los cambios
     } catch (err) {
       console.error("Error al eliminar apartamento:", err);
       const errorMessage = err.response?.data?.message || "Error al eliminar el apartamento";
